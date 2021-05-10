@@ -24,3 +24,8 @@ variable "zone" {
   default     = "europe-central2-a"
   description = "zone"
 }
+
+variable "i_count" {
+  type    = number
+  default = 1
+}

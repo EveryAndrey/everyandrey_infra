@@ -1,6 +1,6 @@
 terraform {
   # Версия terraform
-  required_version = "0.15.3"
+  required_version = "0.12.19"
 }
 
 provider "google" {
@@ -10,10 +10,11 @@ provider "google" {
 }
 
 resource "google_compute_instance" "app" {
-  name         = "reddit-app"
+  name         = "reddit-app${count.index}"
   machine_type = "g1-small"
   zone         = var.zone
   tags         = ["reddit-app"]
+  count        = var.i_count
   boot_disk {
     initialize_params {
       image = var.disk_image
@@ -26,7 +27,7 @@ resource "google_compute_instance" "app" {
   }
 
   metadata = {
-    ssh-keys = "andrey:${file(var.public_key_path)} andrey1:${file(var.public_key_path)} andrey2:${file(var.public_key_path)} andrey3:${file(var.public_key_path)}"
+    ssh-keys = "andrey:${file(var.public_key_path)}"
   }
 
   connection {
