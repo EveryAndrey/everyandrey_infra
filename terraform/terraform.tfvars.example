@@ -1,0 +1,6 @@
+project         = "project-id"
+region          = "europe-west-1"
+disk_image      = "image name/id"
+public_key_path = "/home/appuser/.ssh/appuser.pub"
+ssh_private_key = "/home/appuser/.ssh/appuser"
+i_count = 1
