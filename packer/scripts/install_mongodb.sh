@@ -7,3 +7,4 @@ apt install -y mongodb-org
 
 systemctl start mongod
 systemctl enable mongod
+# /lib/systemd/system/mongod.service

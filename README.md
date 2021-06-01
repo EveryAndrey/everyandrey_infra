@@ -1,4 +1,4 @@
-# everyandrey_infra
+codd# everyandrey_infra
 
 testapp_IP = 34.118.12.247
 testapp_port = 9292
@@ -32,3 +32,13 @@ gcloud compute instances create reddit-app \
 --tags puma-server \
 --zone=europe-central2-a \
 --restart-on-failure
+
+## Terraform
+
+create two stages -
+    prod
+    stage
+    you can disable provisioners by setting enable_provisioner = false in main.tf in each stage
+
+    apply: terraform-12 apply -auto-approve
+    destroy: terraform-12 destroy -auto-approve

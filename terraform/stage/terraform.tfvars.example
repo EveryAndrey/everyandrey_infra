@@ -1,0 +1,7 @@
+project         = "infra-311816"
+region          = "europe-west3"
+disk_image_app  = "reddit-base-app"
+disk_image_db   = "reddit-base-db"
+public_key_path = "~/.ssh/appuser.pub"
+ssh_private_key = "~/.ssh/appuser"
+i_count         = 1

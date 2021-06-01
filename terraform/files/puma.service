@@ -6,6 +6,7 @@ After=network.target
 Type=simple
 User=andrey
 WorkingDirectory=/home/andrey/reddit
+Environment="DATABASE_URL=reddit-db:27017"
 ExecStart=/bin/bash -lc 'puma'
 Restart=always
 

@@ -1,20 +1,8 @@
-terraform {
-  # Версия terraform
-  required_version = "0.12.19"
-}
-
-provider "google" {
-  # ID проекта
-  project = var.project
-  region  = var.region
-}
-
-resource "google_compute_instance" "app" {
-  name         = "reddit-app${count.index}"
+resource "google_compute_instance" "db" {
+  name         = "reddit-db"
   machine_type = "g1-small"
   zone         = var.zone
-  tags         = ["reddit-app"]
-  count        = var.i_count
+  tags         = ["reddit-db"]
   boot_disk {
     initialize_params {
       image = var.disk_image
@@ -40,23 +28,24 @@ resource "google_compute_instance" "app" {
   }
 
   provisioner "file" {
-    source      = "files/puma.service"
-    destination = "/tmp/puma.service"
+    source = "../files/deploy-db.sh"
+    destination = "/tmp/deploy-db.sh"
   }
 
   provisioner "remote-exec" {
-    script = "files/deploy.sh"
+    inline = ["chmod +x /tmp/deploy-db.sh",
+     "/tmp/deploy-db.sh ${self.network_interface[0].network_ip}"]
   }
 
 }
 
-resource "google_compute_firewall" "firewall_puma" {
-  name    = "allow-puma-default"
+resource "google_compute_firewall" "firewall_mongo" {
+  name = "allow-mongo-default"
   network = "default"
   allow {
     protocol = "tcp"
-    ports    = ["9292"]
+    ports = ["27017"]
   }
-  source_ranges = ["0.0.0.0/0"]
-  target_tags   = ["reddit-app"]
+  target_tags = ["reddit-db"]
+  source_tags = ["reddit-app"]
 }
