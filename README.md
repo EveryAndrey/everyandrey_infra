@@ -33,6 +33,10 @@ gcloud compute instances create reddit-app \
 --zone=europe-central2-a \
 --restart-on-failure
 
+## Connect by SSH
+ssh andrey@ip
+~/.ssh/appuser - private key
+
 ## Terraform
 
 create two stages -
@@ -42,3 +46,9 @@ create two stages -
 
     apply: terraform-12 apply -auto-approve
     destroy: terraform-12 destroy -auto-approve
+
+## ANSIBLE
+Inventory - is used for declaring set of hosts
+Created a static inventory(ini), inventory.yml and inventory.json.
+Also created inventory.gcp.yml which uses special gcp_compute module to getting data from the gcp cloud.
+Despite the documentation, the property "service_account_file" is strictly required!
