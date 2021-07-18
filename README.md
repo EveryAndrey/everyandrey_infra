@@ -21,6 +21,8 @@ gcloud compute firewall-rules create default-puma-server \
 
 
 ## Packer
+The main purpose is creating images
+
 Build full image
 cd packer && packer build immutable.json
 
@@ -33,17 +35,26 @@ gcloud compute instances create reddit-app \
 --zone=europe-central2-a \
 --restart-on-failure
 
+Build app/db image from repo directory
+packer build -var-file=packer/variables.json packer/app.json
+packer build -var-file=packer/variables.json packer/db.json
+
+Packer is used gcloud tool when is used googlecompute type
+gcloud auth application-default login
+
 ## Connect by SSH
 ssh andrey@ip
 ~/.ssh/appuser - private key
 
 ## Terraform
+Responsible for creating and supporting cloud infrastracture
 
 create two stages -
     prod
     stage
     you can disable provisioners by setting enable_provisioner = false in main.tf in each stage
 
+from stage/prod
     apply: terraform-12 apply -auto-approve
     destroy: terraform-12 destroy -auto-approve
 
@@ -52,3 +63,6 @@ Inventory - is used for declaring set of hosts
 Created a static inventory(ini), inventory.yml and inventory.json.
 Also created inventory.gcp.yml which uses special gcp_compute module to getting data from the gcp cloud.
 Despite the documentation, the property "service_account_file" is strictly required!
+
+Dynamic inventory get data from the cloud (or somewhere else) by preparing a xml file (the format like _meta: {..}, group_name1: {}, group_name2: {}, groups: {})
+On this groups you can link by group name in host field of ansible playbook.

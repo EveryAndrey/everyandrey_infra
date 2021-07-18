@@ -16,7 +16,7 @@ module "app" {
   disk_image      = var.disk_image_app
   public_key_path = var.public_key_path
   ssh_private_key = var.ssh_private_key
-  enable_provisioner = true
+  enable_provisioner = false
 }
 
 module "db" {
@@ -25,6 +25,7 @@ module "db" {
   disk_image      = var.disk_image_db
   public_key_path = var.public_key_path
   ssh_private_key = var.ssh_private_key
+  enable_provisioner = false
 }
 
 module "vpc" {
