@@ -2,6 +2,7 @@ resource "google_compute_instance" "db" {
   name         = "reddit-db"
   machine_type = "g1-small"
   zone         = var.zone
+  count        = var.enable_provisioner ? 1 : 0
   tags         = ["reddit-db"]
   boot_disk {
     initialize_params {
@@ -38,6 +39,30 @@ resource "google_compute_instance" "db" {
   }
 
 }
+
+resource "google_compute_instance" "db_empty" {
+  name         = "reddit-db"
+  machine_type = "g1-small"
+  count        = var.enable_provisioner ? 0 : 1
+  zone         = var.zone
+  tags         = ["reddit-db"]
+  boot_disk {
+    initialize_params {
+      image = var.disk_image
+    }
+  }
+
+  network_interface {
+    network = "default"
+    access_config {}
+  }
+
+  metadata = {
+    ssh-keys = "andrey:${file(var.public_key_path)}"
+  }
+
+}
+
 
 resource "google_compute_firewall" "firewall_mongo" {
   name = "allow-mongo-default"

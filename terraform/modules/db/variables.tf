@@ -17,3 +17,9 @@ variable "ssh_private_key" {
   type        = string
   description = "private key"
 }
+
+variable enable_provisioner {
+  type        = bool
+  description = "enable provisioners"
+  default     = true
+}

@@ -21,3 +21,4 @@ infra-311816-b53635ac6f21.json
 
 # # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
 # gradle/wrapper/gradle-wrapper.properties
+*.retry
