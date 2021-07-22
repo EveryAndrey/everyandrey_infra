@@ -1,0 +1,15 @@
+plugin: gcp_compute
+projects:
+  - infra-311816
+zones:
+  - "europe-west3-a"
+auth_kind: serviceaccount
+keyed_groups:
+  - prefix: reddit-app
+    key: app
+  - prefix: reddit-db
+    key: db
+groups:
+  app: "'-app' in name"
+  db: "'-db' in name"
+service_account_file: "/home/andrey/courses-train/everyandrey_infra/infra-311816-b53635ac6f21.json"

@@ -66,3 +66,15 @@ Despite the documentation, the property "service_account_file" is strictly requi
 
 Dynamic inventory get data from the cloud (or somewhere else) by preparing a xml file (the format like _meta: {..}, group_name1: {}, group_name2: {}, groups: {})
 On this groups you can link by group name in host field of ansible playbook.
+
+## Ansible galaxy
+create directory structure:
+ansible-galaxy init dir_name
+
+role install:
+ansible-galaxy install -r environments/stage/requirements.yml
+
+encrypting data:
+ansible-vault encrypt/decrypt 'file_name'
+
+The encrypting key is placed in ~/.ansible/vault.key and pointed in ansible.cfg
