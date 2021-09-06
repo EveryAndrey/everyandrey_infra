@@ -23,3 +23,11 @@ infra-311816-b53635ac6f21.json
 # gradle/wrapper/gradle-wrapper.properties
 *.retry
 jdauphant.nginx
+# Vagrant & molecule
+.vagrant/
+*.log
+*.pyc
+.molecule
+.cache
+.pytest_cache
+Pipfile*

@@ -1,5 +1,5 @@
 ---
-- name: Configure MongoDB
+- name: Install and Configure MongoDB
   hosts: db
   become: true
 

@@ -78,3 +78,18 @@ encrypting data:
 ansible-vault encrypt/decrypt 'file_name'
 
 The encrypting key is placed in ~/.ansible/vault.key and pointed in ansible.cfg
+
+## Vagrant
+Is used for creating LOCAL environment (like terraform, but on local machine - based on virtual box, vmware
+)
+
+create: vagrant up (from the dir where vagrantfile defined)
+remove: vagrant destroy (-f)
+
+
+## Test Kitchen
+The goal is the same as in Vagrant, but is used yml decloration instead "ruby like" as in Vagrant
+
+## Molecule
+Another analog. Used yml and is written on Python (the newest tool)
+To install with vagrant - pip3 install --user "molecule-vagrant"
