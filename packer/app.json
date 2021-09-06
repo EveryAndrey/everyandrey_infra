@@ -10,7 +10,7 @@
             "ssh_username": "andrey",
             "machine_type": "{{user `machine_type`}}",
             "tags": [
-                "puma-server"
+                "puma-server", "install"
             ]
         }
     ],

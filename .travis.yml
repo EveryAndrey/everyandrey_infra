@@ -7,3 +7,50 @@ notifications:
   slack:
     rooms:
       secure: EFsFr3za6sGq26iXGU6qWdurzNiLBICkLdItEi9yEFoMfoQVV1TRjdlQns+Va66Pl+OrFrIZ4kHdD51RHhPweCDqDBYTgqBSBeM0YfSIWtsQn4Qvje1ScPNoMb7HCtDgpgYmo4FTVrUd2PSz5QqJbTGEX0WCFZZ8Q7LLsNaxMzRXQcFDs+wJ5tgXSqEojr8IIuhEh73qj7TtKiphoNdib21cJ12y+e8PE0AZvnVQInk1L8owW7DItLbFAb/D3Rh6aY+jhprl0E6qM11o+Pn4Nu0JeLWAdmS/YXGOCQ7mt+k8IvPzze5CvippWhVhZhYKouwWMHM3IHk03NNegm6PhKBPDBoKp/h4xrjUWxpZe8Jh0kp980PcihEkB85ghxDx8fzTORIpIRJL24VAiHzHIKVbQfcT5sL2lhZ25IAwVrnJTHLrxPUDb1W3mzt5QvSp5FF0mgi4BFwT9ADcYT35W4j2vUDYj88TrwtRGN2zegd9HJugwOUmoMOMf0qUHiVZlVvraWkQTq9wwf8uQad3MLDW5n8+YpMauESXPl/j4qz4dOM5eM1Z/bILKlkPVGkLZtARMpMa50K7qy6vIus8U75iT+7FtPsRaLGQn+yvr9Jy336YrDns4aaGvExAMwotycy3cA8VRKTF2A/bJCjvmcOZuKzeI6FFHV+CqG0c1GI=
+
+install:
+  - mkdir tmp
+  - cd tmp
+  - wget https://releases.hashicorp.com/packer/1.5.5/packer_1.5.5_linux_amd64.zip
+  - wget https://releases.hashicorp.com/terraform/0.12.24/terraform_0.12.24_linux_amd64.zip
+  - wget https://github.com/terraform-linters/tflint/releases/download/v0.15.4/tflint_linux_amd64.zip
+  - ls -la
+  - sudo unzip -o -d /usr/local/bin/ packer_1.5.5_linux_amd64.zip
+  - sudo unzip -o -d /usr/local/bin/ terraform_0.12.24_linux_amd64.zip
+  - sudo unzip -o -d /usr/local/bin/ tflint_linux_amd64.zip
+  - cd ..
+  - rm -rf tmp
+  - pip install --user ansible
+  - pip install --user ansible-lint
+
+script:
+  # packer checks
+  - cd packer
+  - packer validate -var-file=variables.json.example ubuntu16.json
+  - packer validate -var-file=variables.json.example immutable.json
+  - packer validate -var-file=variables.json.example immutable.json
+  - cd ..
+  - packer validate -var-file=packer/variables.json.example packer/app.json
+  - packer validate -var-file=packer/variables.json.example packer/db.json
+
+  # terraform
+  - cd terraform/stage
+  - rm backend.tf
+  - mv terraform.tfvars.example terraform.tfvars
+  - terraform get
+  - terraform init
+  - terraform validate
+  - cd ../prod
+  - rm backend.tf
+  - mv terraform.tfvars.example terraform.tfvars
+  - terraform get
+  - terraform init
+  - terraform validate
+  - cd ../../
+  - tflint terraform/stage
+  - tflint terraform/prod
+
+  # ansible
+  - ansible-lint ansible/playbooks/site.yml --exclude=roles/jdauphant.nginx
+  - ansible-lint ansible/playbooks/app.yml --exclude=roles/jdauphant.nginx
+  - ansible-lint ansible/playbooks/db.yml --exclude=roles/jdauphant.nginx

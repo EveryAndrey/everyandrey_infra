@@ -8,13 +8,19 @@
             "source_image_family": "{{user `source_image_family`}}",
             "zone": "europe-west1-b",
             "ssh_username": "andrey",
-            "machine_type": "{{user `machine_type`}}"
+            "machine_type": "{{user `machine_type`}}",
+            "tags": [
+                "puma-db"
+            ]
+
         }
     ],
     "provisioners": [
         {
             "type": "ansible",
-            "playbook_file": "ansible/playbooks/packer_db.yml"
+            "playbook_file": "ansible/playbooks/packer_db.yml",
+            "ansible_env_vars": ["ANSIBLE_ROLES_PATH={{ pwd }}/ansible/roles"],
+            "extra_arguments": ["--tags", "install"]
         }
     ]
 }
